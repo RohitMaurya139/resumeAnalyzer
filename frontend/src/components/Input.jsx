@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { gemini } from "../gemini/gemini";
 import { useNavigate } from "react-router-dom";
+import { ReportContext } from "../context/report-context";
+
 
 const Input = () => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [focused, setFocused] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const { report, setReport } = useContext(ReportContext);
   const navigate = useNavigate();
 
   async function submit() {
     setLoading(true);
     setError(null);
-    const res = await gemini(input, setError);
-    localStorage.setItem("input", JSON.stringify(res));
-    setLoading(false);
-    navigate("/report");
+   const res = await gemini(input, setError);
+   if (!res) {
+     setLoading(false);
+     return;
+   } // stop if parsing failed
+   setReport(res);
+   setLoading(false);
+   navigate("/report");
   }
 
   return (

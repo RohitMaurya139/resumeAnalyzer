@@ -6,8 +6,18 @@ export async function gemini(input, setError) {
       message: input,
     });
 
-    return response.data.reply;
+    const raw = response.data.reply;
+
+    // Strip markdown code fences if the model wraps JSON in ```json ... ```
+    const clean = raw.replace(/```json|```/g, "").trim();
+
+    return JSON.parse(clean);
   } catch (error) {
-    setError(error.response?.data?.error || error.message);
+    setError(
+      error.response?.data?.error ||
+        error.message ||
+        "Failed to parse response",
+    );
+    return null;
   }
 }
