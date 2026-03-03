@@ -7,6 +7,7 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
+  "https://resume-analyzer-frontend-five.vercel.app/",
   "http://localhost:5173",
   "http://localhost:5174",
 ];
