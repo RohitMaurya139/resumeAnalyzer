@@ -2,9 +2,13 @@ import axios from "axios";
 
 export async function gemini(input, setError) {
   try {
-    const response = await axios.post("http://localhost:5000/api/chat", {
-      message: input,
-    });
+    // http://localhost:5000
+    const response = await axios.post(
+      "https://resume-analyzer-backend-two.vercel.app/api/chat",
+      {
+        message: input,
+      },
+    );
 
     const raw = response.data.reply;
 
